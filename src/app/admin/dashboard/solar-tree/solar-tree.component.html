@@ -1,0 +1,79 @@
+<div id="content" style="padding:10px;">
+    
+  <div fxLayout.xs="column">
+    <div fxFlex="85">
+      <h3 class="head3 mt0 mb5">Solar</h3>
+    </div>
+    <div fxFlex="15" class="posRel text-right">
+        <label style="float:right; margin-right: 20px;"><input type="image" src="\assets\images\{{buttonName}}" width="35" height="35" (click)="toggle()" id="bt">
+        </label>
+    </div>
+  </div>
+ 
+  <div fxLayout="column" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.1%" fxLayoutAlign="start none">
+      
+      <!-- <p class="heading-content">
+          <label style="float:left"></label>
+          <label style="float:right; margin-right: 20px;"><input type="image" src="\assets\images\{{buttonName}}" width="35" height="35" (click)="toggle()" id="bt">
+          </label>
+      </p> -->
+
+      <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+        <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
+          <button mat-icon-button disabled></button>
+          <mat-label class="title" style="cursor: pointer" *ngIf="!show" >{{node.name}}</mat-label>
+          <mat-checkbox *ngIf="show" class="checklist-leaf-node"
+                        [checked]="checklistSelection.isSelected(node)"
+                        (change)="todoLeafItemSelectionToggle(node)">{{node.name}}</mat-checkbox>
+          <mat-spinner *ngIf="node.isLoading" [diameter]="70"
+              mode="indeterminate"
+              class="example-tree-progress-bar"></mat-spinner>
+        </mat-tree-node>
+       
+        <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+          <button mat-icon-button matTreeNodeToggle
+                  [attr.aria-label]="'toggle ' + node.filename">
+            <mat-icon class="mat-icon-rtl-mirror">
+              {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+            </mat-icon>
+          </button>
+          <mat-label class="title" *ngIf="!show" (click)="redirectWind(node)" [ngClass]="{'cur-poi': node.level == 0}">{{node.name}}</mat-label>
+          <mat-checkbox *ngIf="show" [checked]="descendantsAllSelected(node)"
+                        [indeterminate]="descendantsPartiallySelected(node)"
+                        (change)="todoItemSelectionToggle(node)">{{node.name}}</mat-checkbox>
+          <button *ngIf="show" mat-icon-button (click)="addNewItem(node)"><mat-icon>add</mat-icon></button>
+          <!-- <label *ngIf="node.level == 0" style="float:right; margin-right: 20px;padding-left:5px" (click)="navigateSolarUpload()"><input type="image" src="\assets\images\show.png" width="25" height="25" ></label> -->
+          
+          <mat-spinner *ngIf="node.isLoading" [diameter]="20"
+                    mode="indeterminate"
+                    class="example-tree-progress-bar"></mat-spinner  >
+        </mat-tree-node>
+      </mat-tree>
+
+      <!-- <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" dir="rtl">
+        <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
+          <button mat-icon-button disabled></button>
+          <mat-checkbox class="checklist-leaf-node"
+                        [checked]="checklistSelection.isSelected(node)"
+                        (change)="todoLeafItemSelectionToggle(node)">{{node.name}}</mat-checkbox>
+          <mat-progress-bar *ngIf="node.isLoading"
+                            mode="indeterminate"
+                            class="example-tree-progress-bar"></mat-progress-bar>
+        </mat-tree-node>
+        <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+          <button mat-icon-button matTreeNodeToggle
+                  [attr.aria-label]="'toggle ' + node.filename">
+            <mat-icon class="mat-icon-rtl-mirror">
+              {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+            </mat-icon>
+          </button>
+          <mat-checkbox [checked]="descendantsAllSelected(node)"
+                        [indeterminate]="descendantsPartiallySelected(node)"
+                        (change)="todoItemSelectionToggle(node)">{{node.Title}}</mat-checkbox>
+          <mat-progress-bar *ngIf="node.isLoading"
+                            mode="indeterminate"
+                            class="example-tree-progress-bar"></mat-progress-bar>
+        </mat-tree-node>
+      </mat-tree> -->      
+  </div>
+</div>

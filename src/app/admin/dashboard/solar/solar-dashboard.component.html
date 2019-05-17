@@ -1,0 +1,183 @@
+<div id="content" style="padding:10px;">
+  <!-- List of Upload  -->
+  <div class="mtb10">
+    <ul class="breadcrumb">
+      <li><a routerLink="/solar-tree">{{project_name}}</a></li>
+      <li><a class="disabled">Upload</a></li>
+    </ul>
+  </div>
+  <form #f="ngForm" #form (submit)="uploadSubmit(f)">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.9%" fxLayoutAlign="start center">
+
+      <div fxFlex="12%">
+        <mat-form-field class="w100p">
+          <mat-label>Project Type</mat-label>
+          <input disabled matInput name="projecttype" placeholder="Project Type"
+            value="{{project_dataitem.projecttype}}" class="disabledInput">
+
+        </mat-form-field>
+      </div>
+      <div fxFlex="15%">
+        <mat-form-field class="example-full-width">
+          <input type="text" placeholder="Inverter name" matInput [formControl]="myControl" name="inv_name"
+            [(ngModel)]="project_dataitem.inv_name" [matAutocomplete]="auto" required>
+          <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption [displayWith]="displayFn">
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option"
+              (onSelectionChange)="selectOption($event, option)">
+              <span style="font-size: 15px; font-weight: 500;">{{option.inv_name}} - </span>
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+      </div>
+      <div fxFlex="15%">
+        <mat-form-field class="example-full-width">
+          <mat-label>Inverter</mat-label>
+          <mat-select name="plot" [(ngModel)]="project_dataitem.plot" #plot="ngModel"
+            (selectionChange)="uploadFilelists(project_dataitem)">
+            <mat-option *ngFor="let invt of invts" [value]="invt">
+              {{invt}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div fxFlex="15%">
+        <mat-form-field class="w100p">
+          <mat-select name="image_type" [(ngModel)]="project_dataitem.image_type" #image_type="ngModel"
+            placeholder="Select Image Type">
+            <mat-option>-- Select One --</mat-option>
+            <mat-option *ngFor="let imagelist of imagetypelist" value={{imagelist}}>{{imagelist}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="18%">
+        <div fxLayout="row">
+          <input [disabled]="isDisabled" class="fileInput" #myInput name="file" id="file" id="input-file-id" multiple
+            type="file" (change)="getFileDetails($event)" required />
+          <label for="input-file-id" class="mat-button file-input-label mnt10">
+            <mat-icon>image</mat-icon>
+            <span>Choose Images</span>
+          </label>
+          <mat-label style="font-size: 13px;">&nbsp;{{filescount}}&nbsp;&nbsp;&nbsp;</mat-label>
+        </div>
+      </div>
+      <div fxFlex="10%" style="margin-bottom: 4px;">
+        <button type="submit" style="margin-bottom: 4px;" mat-button mat-raised-button mat-secondary class="w100 mnt10"
+          [disabled]="isDisabled">Upload</button>
+      </div>
+      <div disabled fxFlex="10%" style="margin-bottom: 4px;">
+        <button style="margin-bottom: 4px;" type="button" mat-button mat-raised-button mat-secondary class="w100 mnt10"
+          (click)="selectionProcess()">Process</button>
+      </div>
+    </div>
+    <mat-label>{{fileuploading}}</mat-label>
+    <mat-progress-bar *ngIf="show" mode="determinate" value={{percuploading}}></mat-progress-bar>
+
+  </form>
+
+  <hr style="border-top:1px solid #e2e2e2;" />
+
+  <div class="example-container mat-elevation-z5">
+    <mat-table #table [dataSource]="dataSource" matSort>
+
+      <!-- Checkbox Column -->
+      <ng-container matColumnDef="select">
+        <mat-header-cell *matHeaderCellDef [ngClass]="'customWidthSelect'">
+          <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
+            [indeterminate]="selection.hasValue() && !isAllSelected()">
+          </mat-checkbox>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row" [ngClass]="'customWidthSelect'">
+          <mat-checkbox (click)="$event.stopPropagation()" [disabled]="isSortingDisabled(row.Status)"
+            (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+          </mat-checkbox>
+        </mat-cell>
+
+      </ng-container>
+
+      <ng-container matColumnDef="date">
+        <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'customWidthDate'"> Generated Date
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row" [ngClass]="'customWidthDate'"> {{row?.Date | date: 'dd-MM-yyyy'}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="plot">
+        <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'customWidthPlot'"> Plot </mat-header-cell>
+        <mat-cell *matCellDef="let row" [ngClass]="'customWidthPlot'"> {{row?.plot }} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="totalImages">
+        <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'customWidthTotal'"> Total images
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row" [ngClass]="'customWidthTotal'"> {{row?.count_of_images}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="imagetype">
+        <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'customWidthType'"> Image Type </mat-header-cell>
+        <mat-cell *matCellDef="let row" [ngClass]="'customWidthType'"> {{row?.image_type}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="issues">
+        <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'customWidthIssues'"> Issues </mat-header-cell>
+        <mat-cell *matCellDef="let row" [ngClass]="'customWidthType'" class="cur-poi">
+          <mat-icon matBadge="{{row?.id}}" matBadgeColor="warn">error_outline</mat-icon>
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="status">
+        <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'customWidthStatus'"> Status </mat-header-cell>
+        <mat-cell *matCellDef="let row" [ngClass]="'customWidthStatus'"> {{row?.Status}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Action </mat-header-cell>
+
+        <mat-cell *matCellDef="let row">
+
+          <button matTooltip="Add Image" mat-button mat-mini-fab class="view-unidentified-btn"
+            [disabled]="isSortingDisabled(row.Status)" (click)="onAdddata(row)">
+            <!-- <mat-icon mat-svg-icon="assets/images/addimage.svg"></mat-icon> -->
+            <mat-icon>add</mat-icon>
+          </button>&nbsp;
+          <button matTooltip="View Map" mat-button mat-mini-fab class="view-unidentified-btn" (click)="viewMap(row)">
+            <mat-icon>map</mat-icon>
+          </button>&nbsp;
+          <button matTooltip="View Report" mat-button mat-mini-fab class="view-unidentified-btn">
+            <mat-icon>receipt</mat-icon>
+          </button>&nbsp;
+          <button matTooltip="View Un-identified" mat-button mat-mini-fab class="view-unidentified-btn"
+            (click)="onUnidentifiedSenddata(row)">
+            <mat-icon>insert_chart</mat-icon>
+          </button>&nbsp;
+          <button matTooltip="{{(row?.image_type =='Video') ? 'View Video' : 'View Image'}}" mat-button mat-mini-fab class="view-unidentified-btn"
+            (click)="onSenddata(row)">
+            <mat-icon>image</mat-icon> 
+          </button>&nbsp;
+          <!-- <button mat-button mat-raised-button class="view-unidentified-btn" (click)=onSenddata(row)>View Un-identified</button> -->
+        </mat-cell>
+
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    <!-- <div *ngIf="dataLoading" class="tableNoRcrd">
+        <mat-label class="tableNoRcrd">
+          <mat-spinner diameter="40" style="margin:0 auto;"></mat-spinner>
+        </mat-label>
+      </div> -->
+    <mat-paginator *ngIf="!hasData" [length]="totalRecords"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="pageSizeOptions"
+    (page)="uploadFilelists($event)">
+    </mat-paginator>
+
+    <div *ngIf="hasData" class="tableNoRcrd">
+
+      <mat-label class="tableNoRcrd"> No records found</mat-label>
+
+
+    </div>
+  </div>
+
+
+
+</div>

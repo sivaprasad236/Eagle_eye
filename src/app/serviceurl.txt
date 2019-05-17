@@ -1,0 +1,41 @@
+SERVICES: 
+---------
+#1: Login
+URL: http://10.80.17.48:5000/login
+Method: POST
+KEYS: User_ID, Password
+
+#2: Data Retrieval
+URL: http://192.168.0.128:5000/dataretrieval
+Method: GET
+KEYS: -
+
+#3: Upload
+URL: http://192.168.0.128:5000/upload
+Method: POST
+KEYS: Plant, Project, file
+
+#4: Process
+URL: http://192.168.0.128:5000/Process
+Method: GET
+KEYS: -
+
+#5: View Map
+URL: http://192.168.0.128:5000/viewmap/<folder_name>
+Method: GET
+KEYS: -
+
+#6: View Image
+URL: http://192.168.0.128:5000/viewimage/<folder_name>/<id>
+Method: GET
+KEYS: -
+
+#7: Display Images
+URL: http://192.168.0.128:5000/display_images/<folder_name>
+Method: GET
+KEYS: -
+
+#8: User Inputs
+URL: http://192.168.0.128:5000/user_inputs
+Method: POST
+KEYS: _id, user_input

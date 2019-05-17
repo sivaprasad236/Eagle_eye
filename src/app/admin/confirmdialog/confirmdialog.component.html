@@ -1,0 +1,8 @@
+<div class="content-dialog">
+  <h1 mat-dialog-title>Confirm</h1>
+  <div mat-dialog-content>{{confirmMessage}}<br/><span style="font-size: 13px;">{{note}}</span></div>
+  <div mat-dialog-actions style="margin-top: 13px;float:right; margin-bottom: 3px;">
+    <button mat-button style="color: #fff;background-color: #C82428;" (click)="dialogRef.close(true)">Confirm</button>
+    <button mat-button style="background-color: rgb(211, 207, 207);" (click)="dialogRef.close(false)">Cancel</button>
+  </div>
+  </div>

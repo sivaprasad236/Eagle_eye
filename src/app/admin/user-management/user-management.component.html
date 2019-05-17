@@ -1,0 +1,97 @@
+<div id="wrapper">
+  <div id="header">
+    <mat-toolbar>
+      <mat-toolbar-row class="singleRow" >
+        <span class="logoWrap" routerLink="/maindashboard">
+          <img class="resImg" src="./assets/images/logo.png" style="min-width:150px;">          
+        </span>
+        <span class="sub-title" routerLink="/maindashboard">
+          Eagle <span style="color:#3EB6E6;">E</span><span style="color:#76C44C;">y</span><span style="color:#FF952A;">e</span>
+        </span>
+        <span class="spacer"></span>
+        <span class="user-info">
+            <mat-icon>person_outline</mat-icon>
+          <span>
+              <label style="padding-left: 1px;" [matMenuTriggerFor]="verticals" class="header-drop-menu">{{currentUser.username | titlecase}}</label>
+          </span>
+        </span>
+        <mat-menu #verticals="matMenu">
+          <button mat-menu-item (click)="userLogout()"><span class="al-items"><mat-icon>power_settings_new</mat-icon> Logout</span></button>
+        </mat-menu>
+      </mat-toolbar-row>
+    </mat-toolbar>
+  </div>
+
+  <div class="btn_content">
+      <div fxLayout="column" fxLayoutAlign="space-between start" >
+        <div>
+            <label class="heading-content">User Management</label>
+        </div>
+        <div class="subheading-content" fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.9%">
+          <div fxFlex="15%">
+            <mat-form-field class="w100p">
+              <mat-label>Select Role</mat-label>
+              <mat-select  [formControl]="roleControl" (selectionChange)="doSomething($event)" required>   
+                <mat-option *ngFor="let roleControl of rolesdata" [value]="roleControl.roles">
+                  {{roleControl.roles}}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="roleControl.hasError('required')">Please choose a role</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="15%" *ngIf="viewProjectList">
+              <mat-form-field class="w100p">
+                  <mat-label>Select Project</mat-label>
+                  <mat-select [formControl]="projectControl" (selectionChange)="doSomething1($event)" required>
+                      
+                      <mat-option *ngFor="let projectControl of projectdata" [value]="projectControl.Project">
+                      {{projectControl.Project}}
+                      </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="projectControl.hasError('required')">Please choose a project</mat-error>
+              </mat-form-field>
+          </div>
+
+          <div fxFlex="90%" style="text-align: right; margin-right: 30px;" *ngIf="createdialog">
+                  <button mat-mini-fab (click)="openDialog()" style="background-color: #244B65; margin-right: 30px;" matTooltip="Add User Management"><mat-icon>group_add</mat-icon></button>&nbsp;
+
+          </div>
+      </div>
+    </div>
+  </div> 
+
+  </div>
+  <div id="content">
+    <div class="unidentified-cards">
+      <hr style="border-top:1px solid #e2e2e2;"/>
+        
+      <div class="example-container mat-elevation-z5" style="margin-left: 0px; margin-right: inherit;">
+          <mat-table #table [dataSource]="dataSource" matSort>
+              <ng-container matColumnDef="Name">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'customWidthClass'"> User Name </mat-header-cell>
+                  <mat-cell *matCellDef="let row" [ngClass]="'customWidthClass'"> {{row.FIRST_NAME+" "+row.LAST_NAME}} </mat-cell>
+              </ng-container>
+          
+              <!-- Project Column -->
+              <ng-container matColumnDef="EmailID">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'customWidthProject'"> Email </mat-header-cell>
+                  <mat-cell *matCellDef="let row" [ngClass]="'customWidthProject'"> {{row.WORK_EMAIL}} </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="Action">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Action </mat-header-cell>
+                  <mat-cell *matCellDef="let row">
+                  <button mat-button  (click)="deleteUser(row)"><mat-icon  class="material-icons color_red">delete_outline</mat-icon></button>&nbsp;
+                  </mat-cell>
+                  </ng-container>
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+          <div class="no-results" *ngIf="dataSource?.data?.length == 0">
+              No records found
+          </div>
+          
+      </div>
+  </div>
+</div>

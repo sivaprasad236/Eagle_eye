@@ -1,0 +1,49 @@
+<h2 mat-dialog-title>Create Project</h2>
+<form [formGroup]="projectForm" novalidate>  
+<mat-dialog-content>
+    <table>  
+        <tr>  
+            <td>  
+                <mat-form-field style="margin-top: -4px;">  
+                    <mat-select formControlName="Projecttype" #Projecttype (selectionChange)="selectProjectType($event.value)" placeholder="Select Project Type">  
+                        <mat-option>-- Select Any --</mat-option>  
+                        <mat-option  *ngFor="let projectlist of projecttypelist" value={{projectlist.business_name}}>{{projectlist.business_name}}</mat-option>  
+                    </mat-select>
+                </mat-form-field>  
+            </td>
+              
+            <td>  
+                <mat-form-field class="full-width">  
+                    <input formControlName="projectname" #projectname [formControl]="myControl" autoActiveFirstOption  [matAutocomplete]="auto" matInput placeholder="Project Name">  
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                        <mat-option *ngFor="let option of filteredprojectnameOptions | async" [value]="option">
+                            {{option.project}}
+                        </mat-option>
+                    </mat-autocomplete>
+                   
+                </mat-form-field>  
+                
+            </td>  
+            
+        </tr>  
+        <tr>  
+            <td colspan="2">  
+                <mat-form-field class="full-width">  
+                    <textarea formControlName="description" #description matInput placeholder="Comments" matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="5"></textarea>  
+                    <mat-error *ngIf="!projectForm.get('description').valid && projectForm.get('description').touched">Please enter proper Comments</mat-error>
+                </mat-form-field>
+            </td>  
+        </tr>
+        <tr>  
+            <td></td>  
+        </tr>  
+    </table>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button (click)="addProject(projectname.value, Projecttype.value, description.value)" cdkFocusInitial >Submit</button>
+</mat-dialog-actions>
+
+
+</form>

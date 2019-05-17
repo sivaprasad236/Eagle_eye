@@ -1,0 +1,55 @@
+<h2 mat-dialog-title>Create Project</h2>
+<form #f="ngForm" (submit)="addProject(f)" novalidate>  
+<mat-dialog-content>
+    <table>  
+        <tr>  
+            <td>
+                    <mat-form-field class="full-width">  
+                <input matInput disabled [(ngModel)]="data.project_type" name="project_type" #project_type   placeholder="Project type">    
+                <!-- <mat-form-field style="margin-top: -4px;">  
+                    <mat-select formControlName="Projecttype" [(ngModel)]="data.project_type" #Projecttype placeholder="Select Project Type">  
+                        <mat-option value={{data.project_type}}>{{data.project_type}}</mat-option>  
+                    </mat-select>
+                </mat-form-field>   -->
+            </mat-form-field>
+            </td>
+              
+            <td>  
+                <mat-form-field class="full-width">  
+                    <input name="project_name" [(ngModel)]="data.project_name" #project_name="ngModel"  matInput placeholder="Project Name" [required]="true">  
+                    <div class="haserror" *ngIf="(project_name.errors && project_name.touched || f.submitted)" class="tLeft">
+                            <small *ngIf="project_name.errors?.required" class="haserror">
+                                    Project name is required
+                            </small>
+                        </div>
+                   
+                </mat-form-field>  
+                
+            </td>  
+            
+        </tr>  
+        <tr>  
+            <td colspan="2">  
+                <mat-form-field class="full-width">  
+                    <textarea name="description" [(ngModel)]="data.description" #description="ngModel" matInput placeholder="Description" matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="5" [required]="true"></textarea>  
+                    <div class="haserror" *ngIf="(description.errors && description.touched || f.submitted)" class="tLeft">
+                            <small *ngIf="description.errors?.required" class="haserror">
+                                    Description is required
+                            </small>
+                        </div>
+                </mat-form-field>
+            </td>  
+        </tr>
+        <tr>  
+            <td></td>  
+        </tr>  
+    </table>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button type="submit" cdkFocusInitial >Submit</button>
+</mat-dialog-actions>
+
+
+</form>

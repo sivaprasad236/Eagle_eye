@@ -1,0 +1,18 @@
+<div id="content" class="p10">
+<div id="stage">
+        <video draggable="true" [src]="path" class="videoPlayer" #videoPlayer >
+                  
+               
+            <p>Your browser doesn't support the HTML5 video tag it seems. 
+               You can see this video as part of a collection 
+            </p>         
+        </video>
+      </div>
+      <div id="controls"></div>
+      <div style="margin: 20px 0">
+            <button (click)="getSnapshot()"  style="margin-bottom: 10px; padding: 2px 4px">Get snapshot</button>
+            <canvas #canvas id="canvas"  width="160" height="120"></canvas>
+          </div>
+          <!-- <button (click)="click()" ></button>
+          <img *ngIf="drag" id="image" [src]="img" width="100" height="100" (click)="imageEdit(img)"> -->
+</div>

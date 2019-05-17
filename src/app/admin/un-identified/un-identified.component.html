@@ -1,0 +1,43 @@
+<div id="content" class="p10">
+  <!-- List of Tickets  -->
+  <div fxLayout.xs="column">
+    <div fxFlex="95">
+      <h3 class="head3 mt0 mb5">Un-identified</h3>
+    </div>
+    <div fxFlex="5" class="posRel text-right">
+    </div>
+  </div>
+
+  <div class="unidentified-cards" >
+    <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutGap="0.5%" fxLayoutAlign="start center" >
+      <mat-card class="unidentified-card" fxFlex="255px" *ngFor="let displayimgList of displayimgLists">
+        <div fxLayout="row"  fxLayoutAlign="space-between center" class="unidentified-header-row">
+            <mat-checkbox class="card-checkbox" (change)="onChange(displayimgList, inputoption, $event.checked)"></mat-checkbox>
+            <mat-form-field class="select-no-pad-mar">
+            <input type="text"  #inputoption aria-label="Number" matInput [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let option of options" [value]="option">
+                {{option}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+          
+        </div>
+        <img mat-card-image src="{{path}}{{displayimgList.image_title}}" alt="solar image">
+        
+        <mat-card-content text-center>
+          <button mat-button [disabled]="submittingImage" (click)="unidentifiedSingle(displayimgList, inputoption.value)">SUBMIT</button>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+ 
+
+  <div class="overall-submit-wrapper">
+    <button mat-raised-button color="primary" (click)="unidentifiedMultiple()" mat-button>SUBMIT</button>
+  </div>
+
+
+<!-- {{inputUnidentifiedmulti | json}} --> <br/>
+

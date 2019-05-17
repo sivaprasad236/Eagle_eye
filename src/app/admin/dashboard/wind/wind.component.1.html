@@ -1,0 +1,95 @@
+<div id="content" style="padding:10px;">
+  <!-- List of Tickets  -->
+  <div fxLayout.xs="column">
+    <div fxFlex="85">
+      <h3 class="head3 mt0 mb5">Wind</h3>
+    </div>
+    <div fxFlex="15" class="posRel text-right">
+      
+    </div>
+  </div>
+
+  <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="start center">
+      <div fxFlex="20%">
+          <mat-form-field class="w100p">
+            <mat-label>Project Name</mat-label>
+            <input disabled matInput placeholder="Project Name" value="{{project_name}}" class="disabledInput">
+          </mat-form-field>
+        </div>
+  
+        <div fxFlex="20%">
+          <mat-form-field class="w100p">
+              <mat-label>Project Type</mat-label>
+              <input disabled matInput placeholder="Project Type" value="{{project_type}}" class="disabledInput">
+            </mat-form-field>
+        </div>
+    <div fxFlex="15%" >
+      <mat-form-field class="w100p">
+        <mat-label>WTG</mat-label>
+        <span fxLayout="row">
+        <input  disabled fxFlex="26%" name="bladelabel" class="w10p" matInput value="{{filename}}" maxlength="4" size="4" class="disabledInput"/>
+        <input class="w10p" type="number" matInput name="blade" placeholder="Enter value" min="1"/>
+      </span>
+      </mat-form-field>
+    </div>
+
+    <div fxFlex="20%">
+        <mat-form-field class="w100p">
+          <mat-label>{{type}}</mat-label>
+          <mat-select value="default">
+            <mat-option value="1">1</mat-option>
+            <mat-option value="2">2</mat-option>
+            <mat-option value="3">3</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    <div fxFlex="15%">
+      <input class="fileInput" id="input-file-id" multiple type="file" />
+      <label for="input-file-id" class="mat-button mat-raised-button file-input-label mnt10">
+        <mat-icon>image</mat-icon>
+        <span>Choose Images</span>
+      </label>
+    </div>
+    <div fxFlex="10%">
+      <button mat-button mat-raised-button mat-secondary class="mnt10">Submit</button>
+    </div>
+    
+  </div>
+  <hr style="border-top:1px solid #e2e2e2;"/>
+  
+  <mat-card class="mt40" style="background-color:#f0f0f0;">
+    <mat-card-header>
+      <div fxLayout="row" class="w100p" fxLayoutAlign="center center" fxLaoutGap="20px">
+        <div fxFlex="15%">
+          Generated Date:
+          <br/>
+          <span class="triv-text">31-08-2018</span>
+        </div>
+        <div fxFlex="15%">Project:
+          <br/>
+          <span class="triv-text">Project Name</span>
+        </div>
+        <div fxFlex="15%">WTG:
+          <br/>
+          <span class="triv-text">WTG-1</span>
+        </div>
+
+        <div fxFlex="15%">Blade:
+            <br/>
+            <span class="triv-text">3</span>
+          </div>
+        <div fxFlex="15%">Status:
+          <br/>
+          <span class="triv-text">Completed</span>
+        </div>
+        <div fxFlex class="text-right">
+          <button mat-button mat-raised-button class="view-unidentified-btn" (click)="viewMap()">View Map</button>
+          <button mat-button mat-raised-button class="view-unidentified-btn">View Report</button>
+        </div>
+      </div>
+    </mat-card-header>
+
+
+  </mat-card>
+  <!-- <div #googleMap style="width:100%;height:280px"></div> -->
+</div>

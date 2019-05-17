@@ -1,0 +1,24 @@
+<div class="contentForm">
+    <div mat-dialog-content>
+      <h1 mat-dialog-title>User Management - {{strData.role}}</h1>
+      <div fxLayout="column" fxLayoutAlign="space-around">
+        <mat-form-field *ngIf="isShowRole" class="example-full-width">
+          <input matInput disabled placeholder="Project" value="{{strData.project}}">
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <input type="text" placeholder="User" matInput [formControl]="myControl" [matAutocomplete]="auto" required>
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (onSelectionChange)="selectOption(option)">
+              <span style="font-size: 15px; font-weight: 500;">{{option.usename}} - </span>
+              <span style="font-size: 13px; font-weight: 300;">{{option.work_email}}</span>
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+    </div>
+    </div>
+  
+    <div mat-dialog-actions class="btnaction">
+    <button mat-button cdkFocusInitial (click)="addUserMngt()">Submit</button>
+    <button mat-button mat-dialog-close>Cancel</button>
+    </div>
+</div>

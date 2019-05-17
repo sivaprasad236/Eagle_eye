@@ -1,0 +1,122 @@
+<div id="wrapper">
+  <div id="header">
+    <mat-toolbar>
+      <mat-toolbar-row class="singleRow">
+        <div fxLayout="row" class="maxWidth" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.9%" fxLayoutAlign="start center">
+          <div fxFlex="50%" class="display">
+              <span class="logoWrap">
+                  <img class="resImg" src="./assets/images/logo.png" style="min-width:150px;">          
+                </span>
+                <span class="sub-title">
+                  Eagle <span style="color:#3EB6E6;">E</span><span style="color:#76C44C;">y</span><span style="color:#FF952A;">e</span>
+                </span>
+          </div>
+          <div fxFlex="50%" class="display">
+              <mat-form-field class="example-full-width" style="font-size:13px;">
+                  <input matInput placeholder="Search" [(ngModel)]="data.search">
+                </mat-form-field>
+                <span style="margin-top:10px">
+                  <i class="material-icons">
+                    search
+                    </i>
+                </span>
+          </div>
+        </div>
+        <span class="spacer"></span>
+          
+          <span style="margin-top:10px;margin-right:10px">
+            <i class="material-icons cur-poi" [matMenuTriggerFor]="menu" (click)="showdiv()">
+              apps
+              </i>
+          </span>
+         
+          <mat-menu class="bgclr" #menu="matMenu">
+              <span>
+                  <i class="material-icons matMenuIcon">
+                      arrow_drop_up
+                      </i>
+              </span>
+            <div flexLayout="row" class="bgclr" style="width:200px;padding: 10px ">
+                <div fxFlex="50%" *ngFor="let list of menuList">
+                    <a (click)="getMenuID(list.app_name)" class="cur-poi">
+                      <span style="position: relative;top:4px">
+                        <img src="assets/images/fourcast.png" height="25px" width="25px"></span> {{list.app_name}}</a>
+                </div>
+                <!-- <div fxFlex="50%"> 
+                    <a (click)="redirect()" class="cur-poi">
+                      <span style="position: relative;top:4px">
+                          <img src="assets/images/fourcast.png" height="25px" width="25px"> </span> FPA</a>
+                     
+                      
+                </div> -->
+            </div>
+            
+          </mat-menu>
+          <!-- <div class="apps_menu" *ngIf="appsMenu">
+            <mat-card>
+              Gee
+            </mat-card>
+          </div> -->
+          <span class="user-info">
+              <mat-icon style="width: 20px;height: 20px;margin-top: -4px; margin-right: 4px;">person_outline</mat-icon>
+              <span>
+                  <label style="padding-left: 1px;font-size: 16px;" [matMenuTriggerFor]="verticals" class="header-drop-menu">{{currentUser.username | titlecase}}</label>
+              </span>
+            </span>
+          <mat-menu #verticals="matMenu">
+            <button mat-menu-item (click)="userLogout()"><span class="al-items"><mat-icon>power_settings_new</mat-icon> Logout</span></button>
+          </mat-menu>
+          
+        
+        
+
+        <!-- <div class="search-container">
+            <input type="text" placeholder="Search.." name="search" class="header-drop-menu">
+            <button type="submit"><mat-icon>search</mat-icon></button>
+  
+        </div> -->
+     
+      </mat-toolbar-row>
+    </mat-toolbar>
+  </div>
+
+  <div class="btn_content">
+      <span>
+          <label class="heading-content">Project Home</label>
+      </span>
+      
+    <button mat-mini-fab *ngIf="show" (click)="openCreateDialog()" style="background-color: #FF952A;" matTooltip="Create Project"><mat-icon>create_new_folder</mat-icon></button>&nbsp;&nbsp;
+    <button mat-mini-fab *ngIf="show" (click)="openUserMngt()" style="background-color: #80C756;" matTooltip="User Managment"><mat-icon>person_add</mat-icon></button>&nbsp;
+
+  </div>
+  <div id="content">
+      <div class="unidentified-cards">
+          <div fxLayout="row wrap" fxLayout.xs="column" fxLayoutGap="0.5%" fxLayoutAlign="start center" >
+            <mat-card class="unidentified-card" fxFlex="312px" *ngFor="let menuList of displaymenuLists">
+              <div fxLayout="row" class="unidentified-header-row" fxLayoutAlign="start center">      
+                  <span (click)="getDashboard(menuList)" style=" cursor: pointer;">
+                    <span class="al-items" matTooltip="Solar" *ngIf="solarimg === menuList.project_type; else elseif1"><img src="assets/images/solar-panel.svg" type="image/svg+xml" class="al-img-icon" /></span>
+                    <span class="al-items" matTooltip="Biomass" #elseif1 *ngIf="biomassimg === menuList.project_type; else elseif2"><img src="assets/images/biomass-panel.svg" type="image/svg+xml" class="al-img-icon" /></span>
+                    <span class="al-items" matTooltip="Wind" #elseif2 *ngIf="windimg === menuList.project_type; else elseif3"><img src="assets/images/wind-panel.svg" type="image/svg+xml" class="al-img-icon" /></span>
+                    <span class="al-items" matTooltip="Hydro" #elseif3 *ngIf="hydroimg === menuList.project_type; else elseif4"><img src="assets/images/hydro-panel.svg" type="image/svg+xml" class="al-img-icon" /></span>
+                    <span class="al-items" matTooltip="GIS" #elseif4 *ngIf="gisimg === menuList.project_type;"><img src="assets/images/gis-panel.svg" type="image/svg+xml" class="al-img-icon" /></span>
+                    <div fxLayout="column" class="unidentified-header-column"  fxFlex="210px">
+                      <span style="color:rgb(63, 63, 63); font-size: 16px; color: #5f5f5f;">{{menuList.project_name | titlecase}}</span>
+                      <span style="color:rgb(110, 109, 109); font-size: 13px; margin-top: 2px;">{{menuList.description}}</span>
+                    </div>
+                  </span>
+                  <i *ngIf="show_menu" style="cursor: pointer;" class="material-icons" [matMenuTriggerFor]="menu">more_vert</i> 
+              </div>
+                <mat-menu #menu="matMenu">
+                  <button (click)="editProject(menuList)" mat-menu-item><mat-icon>mode_edit</mat-icon>Edit Project</button>
+                  <button mat-menu-item routerLink="/user-management"><mat-icon>group_add</mat-icon>User Management</button>  
+                  <button (click)="deleteProject(menuList.id)" mat-menu-item><mat-icon>delete</mat-icon>Delete Project</button>
+                </mat-menu>
+              <mat-card-content class="timeContent">
+                  <mat-card-subtitle style="text-align: right; font-size: 11px; margin-top: 10px;">{{menuList.created_date | date:"d/M/yyyy, h:mm a"}}</mat-card-subtitle>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div> 
+  </div>
+</div>

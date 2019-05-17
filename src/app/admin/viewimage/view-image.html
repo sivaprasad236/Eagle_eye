@@ -1,0 +1,262 @@
+<div id="content" class="p10">
+  <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.9%">
+    <div fxFlex="45%">
+      <ul class="breadcrumb">
+        <li><a class="cur-poi" (click)="backProject()">{{details1.Project}}</a></li>
+        <li><a class="cur-poi" (click)="back()">Upload</a></li>
+        <li><a class="disabled">Report</a></li>
+      </ul>
+    </div>
+
+    <div fxFlex="55%" class="cur-poi">
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.9%">
+        <div fxFlex="75%">Detailed asset condition: {{details1.Type === 'wind' ? wtg + ' ' + bladeName : data.inverter}}
+        </div>
+        <div fxFlex="25%" class="tRight">
+          <i class="material-icons" (click)="download()">
+            cloud_download
+          </i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.9%">
+    <div fxFlex="45%">
+      <div fxLayout="column">
+        <div fxFlex="row">
+          <mat-card class="p5 mat-content">
+            <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
+          </mat-card>
+        </div>
+        <div fxLayout="row" class="mtb5">
+          <div fxFlex="100%">
+            Previous Reports :
+
+          </div>
+        </div>
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.9%">
+          <div fxFlex="100%">
+            <mat-card class="p10 mat-content  bg_grey">
+              No records found
+            </mat-card>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+    <div fxFlex="55%">
+      <div fxLayout="coloumn wrap" fxLayout.xs="column">
+        <div class="dynamic_form_fixed">
+          <mat-card class="view-img-card pb0">
+
+            <!-- <form #f="ngForm" (submit)="submit(f)">
+                    <div *ngFor="let data of dynamicInputs;let i = index;">
+                      <mat-card class="view-img-card">
+                          <mat-form-field class="example-full-width">
+                              <input matInput placeholder="Inverter no" name="name-{{i}}" [(ngModel)]="dynamicInputs[i].name"
+                                #name="ngModel">
+                            </mat-form-field>
+            
+                            <mat-form-field class="example-full-width">
+                              <textarea matInput placeholder="Leave a comment" name="value-{{i}}"
+                                [(ngModel)]="dynamicInputs[i].value" #value="ngModel"></textarea>
+                            </mat-form-field>
+                            <span class="disFlx">
+                              <span>
+                                <button mat-flat-button type="button" color="primary" (click)="fileInput.click()">Select File</button>
+                              </span>
+                              
+                              <span class="dymicFormImg"  >
+                                <span *ngFor="let url of dynamicInputs[i].imageUrl;let j= index">
+                    
+                                  <img class="dymicFormImgstyle" [src]="url" style="border-radius:5%" height="50px" width="50px" >
+                                  <i class="material-icons dymicFormImgIcon" (click)="remove(i,j)">
+                                      cancel
+                                      </i>
+                                </span>
+                               
+                              </span>
+                              <input style="display: none" name="image-{{i}}" type="file" (change)="selectFile($event, i)"
+                                  #fileInput multiple>
+                            </span>
+                      </mat-card>
+                     
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="center stretch">
+                      <button type="submit" mat-raised-button color="primary">Submit</button>
+                    </div>
+      
+                  </form> -->
+            <form #f="ngForm" (submit)="submit(f)">
+
+              <!-- <mat-form-field style="margin-bottom: -10px" class="example-full-width">
+                                <input matInput [disabled]="true" placeholder="Inverter no" name="inverte" [(ngModel)]="data.inverter"
+                                  #inverte="ngModel">
+                              </mat-form-field> -->
+              <div fxLayout="row">
+                <div fxFlex="60%">
+                  Note :
+
+                </div>
+                <div fxFlex="40%" class="tRight">
+                  <span>
+                    <i class="material-icons cur-poi" (click)="dynamicNotes($event)">
+                      add
+                    </i>
+                  </span>
+                </div>
+              </div>
+
+              <mat-form-field style="margin-top: -10px;margin-bottom: -10px" class="example-full-width txtA"
+                *ngFor="let obj of comments; let i = index;">
+                <span matPrefix>{{i+1}} &nbsp;</span>
+                <input matInput name="comment-{{i}}" [(ngModel)]="comments[i].comment" #comment="ngModel"
+                  (keydown.enter)="dynamicNotes($event)">
+                <mat-icon *ngIf="comments.length > 1" style="position: absolute" class="cur-poi"
+                  (click)="deleteDynamicRow($event,i)">close</mat-icon>
+              </mat-form-field>
+              <span class="disFlx">
+                <span>
+                  <!-- <button mat-flat-button type="button" color="primary" (click)="fileInput.click()">Select File</button> -->
+
+                </span>
+
+                <!-- <span class="dymicFormImg"  >
+                                 
+                      
+                                    <img class="dymicFormImgstyle" [src]="data.image" style="border-radius:5%" height="50px" width="50px" >
+                                    <i class="material-icons dymicFormImgIcon">
+                                        cancel
+                                        </i>                   
+                                </span> -->
+
+              </span>
+
+
+              <div fxLayout="row" fxLayoutAlign="start end">
+                <div fxFlex="50">
+                  <img [src]="imagerUpload()" matTooltip="Please select the image" matTooltipPosition="right"
+                    class="dymicFormImgstyle" (click)="fileInput.click()" width="70px" height="70px" />
+                  <input style="display: none" type="file" (change)="selectFile($event)" #fileInput [autofocus]="true">
+                </div>
+                <div fxFlex="50" style="margin-bottom: 8px;">
+                  <button type="submit" mat-raised-button color="primary">Submit</button>
+                </div>
+
+              </div>
+
+            </form>
+
+          </mat-card>
+        </div>
+
+        <div fxLayout="row" class="mtb5">
+          <div fxFlex="100%">
+            Reports :
+
+          </div>
+        </div>
+        <div class="dynamic_form_fixed">
+          <mat-accordion class="example-headers-align " *ngIf="reports.length >0">
+            <mat-expansion-panel class="accmatback" *ngFor="let report of reports; let i = index"
+              [expanded]="step === i" (opened)="setStep(i)" hideToggle>
+              <mat-expansion-panel-header class="accordinonHeader">
+                <mat-panel-title>
+                  {{(report.PLOT !="") ? report.PLOT: report.WTG_NAME}}
+                </mat-panel-title>
+                <mat-icon>notes</mat-icon>
+
+                <mat-panel-description>
+
+                  {{report.DATE}}
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <!-- <hr/> -->
+
+              <form #f="ngForm" (submit)="submit(f)">
+                <div fxLayout="row">
+                  <div fxFlex="60%">
+                    Note :
+                  </div>
+                  <div fxFlex="40%" class="tRight">
+                    <span *ngIf="editable">
+                      <i class="material-icons cur-poi" (click)="editDynamicNotes($event, i)" matTooltip="Add">
+                        add
+                      </i>
+                    </span> &nbsp;
+                    <span *ngIf="!editable">
+                      <i class="material-icons cur-poi" (click)="edit(i)" matTooltip="Edit">
+                        edit
+                      </i></span> &nbsp;
+                    <span *ngIf="editable">
+                      <i class="material-icons cur-poi" (click)="editReport(reports[i], i)" matTooltip="Submit">
+                        done
+                      </i></span> &nbsp;
+                    <!-- <button *ngIf="editable" mat-button type="button" (click)="editReport(reports[i], i)"
+                        color="primary">Submit</button> -->
+                    <span *ngIf="this.reportCount > (i+1)" (click)="nextStep()">
+                      <i class="material-icons cur-poi" matTooltip="Next">
+                        skip_next
+                      </i>
+                    </span> &nbsp;
+                    <span *ngIf="i != 0" (click)="prevStep()" color="primary">
+                      <i class="material-icons cur-poi" matTooltip="Previous">
+                        skip_previous
+                      </i>
+                    </span> &nbsp;
+                    <span *ngIf="editable" (click)="cancel()" color="primary">
+                      <i class="material-icons cur-poi" matTooltip="Cancel">
+                        cancel
+                      </i>
+                    </span>
+                    <!-- <button mat-button color="warn" *ngIf="i != 0" (click)="prevStep()">Previous</button>
+                      <button mat-button >Next</button> -->
+
+                  </div>
+                </div>
+                <div fxLayout="row">
+                  <div fxFlex="85%">
+                    <mat-form-field style="margin-top: -10px;margin-bottom: -10px" class="example-full-width txtA"
+                      *ngFor="let obj of report.COMMENTS; let j = index;">
+                      <span matPrefix>{{j+1}} &nbsp;</span>
+                      <input matInput [disabled]="!inputDisabled" name="report.COMMENTS-{{j}}"
+                        [(ngModel)]="report.COMMENTS[j].comment" #comment="ngModel"
+                        (keydown.enter)="editDynamicNotes($event,i, j)" [autofocus]="true">
+                      <mat-icon *ngIf="report.COMMENTS.length > 1 && inputDisabled" style="position: absolute"
+                        class="cur-poi" (click)="delete($event,i, j)">close</mat-icon>
+                    </mat-form-field>
+
+                  </div>
+                  <div fxFlex="15%" style="text-align: right">
+                    <img *ngIf="inputDisabled" [src]="imagerUpload1(i)" matTooltip="Please select the image"
+                      matTooltipPosition="right" class="dymicFormImgstyle cur-poi" (click)="fileInput1.click()"
+                      width="70px" height="70px" />
+                    <img *ngIf="!inputDisabled" [src]="imagerUpload1(i)" matTooltipPosition="right"
+                      class="dymicFormImgstyle" width="70px" height="70px" />
+                    <input style="display: none" type="file" (change)="selectFile($event)" #fileInput1
+                      [autofocus]="true">
+
+                  </div>
+                </div>
+
+              </form>
+
+              <!-- <mat-action-row>
+             
+              </mat-action-row> -->
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+
+        <mat-card class="example-headers-align bg_grey" *ngIf="reports.length == 0">
+
+          No records found
+
+        </mat-card>
+      </div>
+    </div>
+
+  </div>
+
+</div>
